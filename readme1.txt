@@ -34,6 +34,7 @@ $ python manage.py runserver
 
 建立 Django App
 先建立一個觀念，在 Django 中，通常我們會依照 "功能" 去建立 App ， 例如 musics ，代表他是 管理音樂 的部份。
+這裡要建立一個新用戶的應用程序稱為leads
 $ python manage.py startapp leads
 可以在manager下面看到leads資料夾
 建立完為了讓 Django 知道我們有新增App，請記得要將 App 加入設定檔
@@ -56,6 +57,12 @@ auto_now_add : 新增時會幚你自動加上建立時間。
 auto_now : 資料有更新時會幚你自動加上更新的時間。
 更多可以參考 Django fields
 
+這邊只是建立一個模組，需要再建立migration並執行他這樣才會把資料丟到資料庫底下
+先建立migration
+$ python manage.py makemigrations leads
+然後執行遷移資料至資料庫
+$ python manage.py migrate
+
 Django REST序列化器
 什麼要用Django REST序列化器？序列化是將對象轉換為另一種數據格式的動作。轉換對像後，我們可以將其保存到文件或通過網絡發送。
 為什麼需要序列化？考慮一下Django模型：他是Python類。
@@ -72,7 +79,7 @@ class LeadSerializer(serializers.ModelSerializer):
         fields = '__all__'
 ------------------------------------------------------------------
 
-建立veiwset api，在leads底下建立api.py
+現在要建立veiwset api，在leads底下建立api.py
 內容:
 ------------------------------------------------------------------
 from leads.models import Lead
@@ -112,3 +119,4 @@ urlpatterns =router.urls
 ------------------------------------------------------------------
 這樣就建立好了一個基本的註冊流程api
 
+debug : leads/urls.py >>router = routers.DefaultRouter()
