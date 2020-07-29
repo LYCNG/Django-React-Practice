@@ -17,6 +17,7 @@ Model : 定義一些資料庫的東西 ( ORM )，這層通常是直接和資料�
 Template : 使用者基本上就是看到這層，也就是最後所呈現的 Template ( html )。
 
 View : 可以將這層看做是中間層，它主要負責 Model 和 Template 之間的業務邏輯。
+
 ------------------------------------------------------------------
 
 開始 <說明> 不用複製
@@ -33,9 +34,10 @@ $ python manage.py runserver
 
 建立 Django App
 先建立一個觀念，在 Django 中，通常我們會依照 "功能" 去建立 App ， 例如 musics ，代表他是 管理音樂 的部份。
+這裡要建立一個新用戶的應用程序稱為leads
 $ python manage.py startapp leads
 可以在manager下面看到leads資料夾
-建立完請記得要將 App 加入設定檔
+建立完為了讓 Django 知道我們有新增App，請記得要將 App 加入設定檔
 到manager >> settings.py 裡面的 INSTALLED_APPS 加入 leads (也就是你自己建立的 App 名稱) 和rest_framwork
 
 預設的資料庫為sqlite3 可以到setting 下的 DATABASES 看到。
@@ -55,9 +57,14 @@ auto_now_add : 新增時會幚你自動加上建立時間。
 auto_now : 資料有更新時會幚你自動加上更新的時間。
 更多可以參考 Django fields
 
+這邊只是建立一個模組，需要再建立migration並執行他這樣才會把資料丟到資料庫底下
+先建立migration
+$ python manage.py makemigrations leads
+然後執行遷移資料至資料庫
+$ python manage.py migrate
 
 Django REST序列化器
-什麼是Django REST序列化器？序列化是將對象轉換為另一種數據格式的動作。轉換對像後，我們可以將其保存到文件或通過網絡發送。
+什麼要用Django REST序列化器？序列化是將對象轉換為另一種數據格式的動作。轉換對像後，我們可以將其保存到文件或通過網絡發送。
 為什麼需要序列化？考慮一下Django模型：他是Python類。
 使用Django REST序列化，將python類別的檔案轉成json發送給瀏覽器
 在leads底下建立一個serializers.py檔
@@ -72,14 +79,14 @@ class LeadSerializer(serializers.ModelSerializer):
         fields = '__all__'
 ------------------------------------------------------------------
 
-建立veiwset api，在leads底下建立api.py
+現在要建立veiwset api，在leads底下建立api.py
 內容:
 ------------------------------------------------------------------
 from leads.models import Lead
 from rest_framework import viewsets, permissions
 from .serializers import LeadSerializer
 
-class LeadViewSet(viewssets.ModelViewSet):
+class LeadViewSet(viewsets.ModelViewSet):
     queryset = Lead.objects.all()
     permission_classes = [
         permissions.AllowAny
@@ -88,6 +95,7 @@ class LeadViewSet(viewssets.ModelViewSet):
 ------------------------------------------------------------------
 
 建立urls配對
+在urlpatterns最下面新增path路徑，這是要讓使用者輸入網址時引導Django至leads資料夾內的urls，所以接下來就是要創建leads/urls.py檔案
 在manage底下urls.py
 內容:
 ------------------------------------------------------------------
@@ -98,7 +106,7 @@ urlpatterns = [
 ]
 ------------------------------------------------------------------
 接下來
-到leads建立url.py
+到leads建立urls.py
 內容:
 ------------------------------------------------------------------
 from rest_framework import routers
@@ -110,3 +118,5 @@ router.register('api/leads',LeadViewSet,'leads')
 urlpatterns =router.urls
 ------------------------------------------------------------------
 這樣就建立好了一個基本的註冊流程api
+
+debug : leads/urls.py >>router = routers.DefaultRouter()
