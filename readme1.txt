@@ -63,6 +63,9 @@ $ python manage.py makemigrations leads
 然後執行遷移資料至資料庫
 $ python manage.py migrate
 
+makemigrations ： 會幚你建立一個檔案，去記錄你更新了哪些東西。
+migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
+
 Django REST序列化器
 什麼要用Django REST序列化器？序列化是將對象轉換為另一種數據格式的動作。轉換對像後，我們可以將其保存到文件或通過網絡發送。
 為什麼需要序列化？考慮一下Django模型：他是Python類。

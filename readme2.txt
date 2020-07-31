@@ -189,6 +189,7 @@ Dashboard.js:
     <Form />
     <Leads />
   </Fragment>
+  
 Fragment如果報錯在該檔案裏面加入import { Fragment } from 'react'
 -----------------------------------------------------------------------------
 這樣就完成react基本模板，components是專門放要加到網頁的模板。
