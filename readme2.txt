@@ -128,7 +128,68 @@ path('', include('frontend.urls'))
 -----------------------------------------------------------------------------
 
 此時，可以在http://127.0.0.1:8000/（仍在運行Django開發服務器上）上試一試。
-currnet progress
 
+現在準備網頁的components，到components底下新增layout folder 和leads folder
+layout底下新增Header.js，在Header裡面輸入rce 並按tab，再到bootstrap找navbar複製到return下
+內容:
+-----------------------------------------------------------------------------
+import React, { Component } from 'react'
 
-https://www.youtube.com/watch?v=GieYIzvdt2U
+export class header extends Component {
+    render() {
+        return (
+        <nav className="navbar navbar-expand-sm navbar-light bg-light">
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a className="navbar-brand" href="#">Lead Manager</a>
+                <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+
+                </ul>
+            </div>
+        </nav>
+        )
+    }
+}
+
+export default header
+-----------------------------------------------------------------------------
+補充:<Form>先移除，不然會undefine
+再來到App.js新增 import Header from "./layout/Header"
+內容:
+-----------------------------------------------------------------------------
+class App extends Component{
+    render(){
+    return (
+            <Header />
+        )
+    }
+}
+-----------------------------------------------------------------------------
+然後run server試試。
+在package.json的scripts裡面把"dev"後面新增--watch 像 "webpack --mode development --watch
+可以及時修改react components的檔案不用重跑server
+
+測試完後再leads folder底下新增Dashboard.js Form.js Leads.js，每個都按rce+tab
+個別在return裡面輸入
+-----------------------------------------------------------------------------
+Form.js:
+  <div>
+    h1>Add Lead Form</h1>
+  </div>
+
+Leads.js:
+  <div>
+    <h1>Leads list</h1>
+  </div>
+
+Dashboard.js:
+  <Fragment>
+    <Form />
+    <Leads />
+  </Fragment>
+Fragment如果報錯在該檔案裏面加入import { Fragment } from 'react'
+-----------------------------------------------------------------------------
+這樣就完成react基本模板，components是專門放要加到網頁的模板。
+
